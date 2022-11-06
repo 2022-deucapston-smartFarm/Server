@@ -5,7 +5,7 @@ const rtsp = require('rtsp-ffmpeg');
 
 const schema = require('./schema/schema');
 const db = require('./database');
-const schedule = require('./scheduler');
+const schedule = require('./scheduler/schedule');
 const sf = require('./schema/data');
 require('date-utils');
 

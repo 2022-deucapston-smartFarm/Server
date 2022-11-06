@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const sf = require('./schema/data');
+const schema = require('./schema/schema');
 
 class Database{
     constructor(){
