@@ -126,14 +126,14 @@ module.exports.cleanWeekStats = function(){
 
 module.exports.dumySensor = function(){
     this.sensor.name = "상추";
-    this.sensor.date = "2022-11-01 23:20:00";
+    this.sensor.date = "2022-11-01T21:20:00.017Z";
     this.sensor.temperature = 21;
     this.sensor.humidity = 62;
     this.sensor.co2 = 2600;
     this.sensor.ph = 6.0;
     this.sensor.illuminance = 2600;
     let temp = this.sensor;
-    this.cleanSensor;
+    this.cleanSensor();
     return temp;
 }
 module.exports.dumyDailyStats = function(){
@@ -145,7 +145,7 @@ module.exports.dumyDailyStats = function(){
     this.dailyStats.ph = [6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,5.9,5.8,5.7,6.7];
     this.dailyStats.illuminance = [40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,34563,42663,37342,49352];
     let temp = this.dailyStats;
-    this.cleanDailyStats;
+    this.cleanDailyStats();
     return temp;
 }
 module.exports.dumyWeekStats = function(){
@@ -158,7 +158,7 @@ module.exports.dumyWeekStats = function(){
     this.weekStats.ph = [6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,5.9,5.8,5.7,6.7];
     this.weekStats.illuminance = [40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,34563,42663,37342,49352];
     let temp = this.weekStats;
-    this.cleanWeekStats;
+    this.cleanWeekStats();
     return temp;
 }
 

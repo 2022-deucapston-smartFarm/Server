@@ -43,9 +43,15 @@ const weekSchema = mongoose.Schema({
 });
 const WeekSchema = mongoose.model('week',weekSchema);
 
+const fcmSchema = mongoose.Schema({
+	token : String
+});
+const FcmSchema = mongoose.model('token',fcmSchema);
 
 module.exports = {SensorOptionSchema,
     SensorSchema,
     DailySchema,
-    WeekSchema}
+    WeekSchema,
+	FcmSchema
+}
 
