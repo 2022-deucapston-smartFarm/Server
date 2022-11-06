@@ -17,6 +17,7 @@ app.get('/',function(req,res){
 	res.send("<h1>Express server Start</h1>");
 });
 
+console.log(sf.dumySensor());
 
 io.on('connection' , function(socket) { 
 	console.log(socket.id, 'Connected');
@@ -108,13 +109,13 @@ io.on('connection' , function(socket) {
 
 	//더미파일 받기
 	socket.on("dumySensor",function(d){//센서 데이터
-		socket.emit("dumySensor",JSON.stringify(sf.dumySensor));
+		socket.emit("dumySensor",JSON.stringify(sf.dumySensor()));
 	});
 	socket.on("dumyDaily",function(d){//센서 데이터
-		socket.emit("dumyDaily",JSON.stringify(sf.dumyDailyStats));
+		socket.emit("dumyDaily",JSON.stringify(sf.dumyDailyStats()));
 	});
 	socket.on("dumyWeek",function(d){//센서 데이터
-		socket.emit("dumyWeek",JSON.stringify(sf.dumyWeekStats));
+		socket.emit("dumyWeek",JSON.stringify(sf.dumyWeekStats()));
 	});
 
 	//공지
