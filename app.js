@@ -11,7 +11,7 @@ const fcm = require('./schema/message');
 require('date-utils');
 
 
-var port = 49670;
+var port = 3000;
 http.listen(port, ()=>{
 	console.log("listening on :" + port);
 });
