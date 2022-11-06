@@ -7,9 +7,11 @@ const schema = require('./schema/schema');
 const db = require('./database');
 const schedule = require('./scheduler/schedule');
 const sf = require('./schema/data');
+const fcm = require('./schema/message');
 require('date-utils');
 
-var port = 3000;
+
+var port = 49670;
 http.listen(port, ()=>{
 	console.log("listening on :" + port);
 });
@@ -17,7 +19,6 @@ app.get('/',function(req,res){
 	res.send("<h1>Express server Start</h1>");
 });
 
-console.log(sf.dumySensor());
 
 io.on('connection' , function(socket) { 
 	console.log(socket.id, 'Connected');
@@ -119,8 +120,24 @@ io.on('connection' , function(socket) {
 	});
 
 	//공지
-	socket.on("noticeList",function(d){//공지사항 전달??
-		
+	socket.on("fcm",async function(d){//fcm 토큰정보 저장
+		await schema.FcmSchema.findOne({'token' : d},function(error,data){
+			if(error){
+				console.log("db token 조회 오류");
+			}else{
+				if(data == null){
+					let newtoken = new schema.FcmSchema({'token' : d});
+					newtoken.save(function(error){
+						if(error)
+							console.log("db token 저장 실패");
+						else
+							console.log("db token 저장 성공");
+					});
+				}else{
+					console.log("db token 기존 데이터 존재");
+				}
+			}
+		}).clone();
 	});
 
 	//아두이노 부분
