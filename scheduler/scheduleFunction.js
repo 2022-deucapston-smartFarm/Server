@@ -76,7 +76,7 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 				newDaily.save();
 				console.log("db daily 1시간 처리 생성");
 			}else{
-				DailySchema.updateOne({'date' : StringToDate(date)},{
+				schema.DailySchema.updateOne({'date' : StringToDate(date)},{
 					$push : { 'temperature' : sf.dailyStats.temperature,
 					'humidity' : sf.dailyStats.humidity,
 					'co2' : sf.dailyStats.co2,
