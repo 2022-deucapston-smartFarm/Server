@@ -61,7 +61,7 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 			console.log("db 일간 불러오기 실패");
 		}else{
 			if(data == null){
-				startTime.setHours(startTime.getHours()-9);
+				//startTime.setHours(startTime.getHours()-9);
 				let time = startTime.getHours()
 				if(time != 0){//일간데이터에 기존값이 없으면 더미데이터 채워주기
 					for (let i=0;i<time;i++){
