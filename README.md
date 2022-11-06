@@ -106,7 +106,7 @@ date에 날짜를 기준으로 일일통계를 조회하거나 주간통계의 �
 
 ##더미데이터 받아오기
 ```
-socket.on("dumySensor",true);
+socket.emit("dumySensor",true);
 --->
 sensor ={
     name = "상추";
@@ -121,7 +121,7 @@ sensor ={
 해당 더미센서 파일 받아온다.
 ---
 ```
-socket.on("dumyDaily",true);
+socket.emit("dumyDaily",true);
 --->
 dailyStats ={
     name = "상추";
@@ -136,7 +136,7 @@ dailyStats ={
 해당 더미 일일평균 파일을 받아온다.
 ---
 ```
-socket.on("dumyWeek",true);
+socket.emit("dumyWeek",true);
 --->
 weekStats ={
     name = "상추";
