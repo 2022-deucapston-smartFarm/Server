@@ -132,7 +132,7 @@ module.exports.dumySensor = function(){
     this.sensor.co2 = 2600;
     this.sensor.ph = 6.0;
     this.sensor.illuminance = 2600;
-    let temp = this.sensor;
+    let temp = JSON.parse(JSON.stringify(this.sensor));
     this.cleanSensor();
     return temp;
 }
@@ -144,7 +144,7 @@ module.exports.dumyDailyStats = function(){
     this.dailyStats.co2 = [2600,2500,2400,2200,2500,2556,2900,2600,2500,2100,2600,2500,2400,2200,2500,2556,2900,2600,2500,2100,2300,2600,2660,2335];
     this.dailyStats.ph = [6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,5.9,5.8,5.7,6.7];
     this.dailyStats.illuminance = [40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,34563,42663,37342,49352];
-    let temp = this.dailyStats;
+    let temp = JSON.parse(JSON.stringify(this.dailyStats));
     this.cleanDailyStats();
     return temp;
 }
@@ -157,7 +157,7 @@ module.exports.dumyWeekStats = function(){
     this.weekStats.co2 = [2600,2500,2400,2200,2500,2556,2900,2600,2500,2100,2600,2500,2400,2200,2500,2556,2900,2600,2500,2100,2300,2600,2660,2335];
     this.weekStats.ph = [6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,6.0,5.6,4.5,6.4,6.2,6.1,6.7,5.7,6.4,6.7,5.9,5.8,5.7,6.7];
     this.weekStats.illuminance = [40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,40000,43000,45000,44330,30000,23450,45630,35043,34906,45023,34563,42663,37342,49352];
-    let temp = this.weekStats;
+    let temp = JSON.parse(JSON.stringify(this.weekStats));
     this.cleanWeekStats();
     return temp;
 }
