@@ -150,3 +150,12 @@ weekStats ={
 }
 ```
 해당 더미 주간평균 파일을 받아온다.
+
+## 기준값 업데이트  
+sensorNewInfo -> json파일로 이름,온도,co2,ph,조도 값을 보내면 한번에 등록가능  
+standardName -> 이름값전송시 이름변경  
+standardTemperature -> 온도값 전송시 온도값변경  
+standardCo2 -> co2값 전송시 co2값 변경  
+standardPh -> ph값 전송시 ph값 변경  
+standardIlluminance -> 조도값 전송시 조도값 변경  
+
