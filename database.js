@@ -15,8 +15,16 @@ class Database{
                 if(error){
                     console.log("db sensor new info find error");
                 }else{
-                    if(data == null){
-                        console.log("db sensor new info empty");
+                    if(data == null || data == []){//비어있는경우 기본값 저장
+                        sf.sensorOption.name = "상추";
+                        let newSensorOption = new schema.SensorOptionSchema(sf.sensorOption);
+                        newSensorOption.save(function(error,data){//db저장
+                            if(error){
+                                console.log("db sensor new info save error");
+                            }else{
+                                console.log("db sensor new info save ok");
+                            }
+                        });
                         return;
                     }
                     console.log("db sensor new info find ok");

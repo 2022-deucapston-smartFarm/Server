@@ -30,16 +30,72 @@ io.on('connection' , function(socket) {
 
 	socket.on("sensorNewInfo",function(d){//새로운 식물정보 등록,DB저장
 		const data = JSON.parse(d);
+		let name = sf.sensorOption.name;
 		sf.setSensorOption(data.name,data.temperature,data.co2,data.ph,data.illuminance);
-		let newSensorOption = new schema.SensorOptionSchema(sf.sensorOption);
-		newSensorOption.save(function(error,data){//db저장
+		schema.SensorOptionSchema.updateOne({'name' : name},{
+			$push : { 'name' : sf.sensorOption.name,
+			'temperature' : sf.sensorOption.temperature,
+			'co2' : sf.sensorOption.co2,
+			'ph' : sf.sensorOption.ph,
+			'illuminance' : sf.sensorOption.illuminance
+		}},function(error){
 			if(error){
-				console.log("db sensor new info save error");
+				console.log("db sd 갱신 처리 오류");
 			}else{
-				console.log("db sensor new info save ok");
+				console.log("db sd 처리 성공");
 			}
-		});
+		}).clone();
 	});
+	//식물 기준값 개별 설정
+	socket.on("standardTemperature",function(d){//온도 기준값 업데이트
+		sf.sensorOption.temperature = d;
+		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
+			$push : { 'temperature' : sf.sensorOption.temperature
+		}},function(error){
+			if(error){
+				console.log("db sd 갱신 처리 오류");
+			}else{
+				console.log("db sd 처리 성공");
+			}
+		}).clone();
+	});
+	socket.on("standardCo2",function(d){//co2 기준값 업데이트
+		sf.sensorOption.co2 = d;
+		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
+			$push : { 'co2' : sf.sensorOption.co2
+		}},function(error){
+			if(error){
+				console.log("db sd 갱신 처리 오류");
+			}else{
+				console.log("db sd 처리 성공");
+			}
+		}).clone();
+	});
+	socket.on("standardPh",function(d){//ph 기준값 업데이트
+		sf.sensorOption.ph = d;
+		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
+			$push : { 'ph' : sf.sensorOption.ph
+		}},function(error){
+			if(error){
+				console.log("db sd 갱신 처리 오류");
+			}else{
+				console.log("db sd 처리 성공");
+			}
+		}).clone();
+	});
+	socket.on("standardIlluminance",function(d){//조도 기준값 업데이트
+		sf.sensorOption.illuminance = d;
+		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
+			$push : { 'illuminance' : sf.sensorOption.illuminance
+		}},function(error){
+			if(error){
+				console.log("db sd 갱신 처리 오류");
+			}else{
+				console.log("db sd 처리 성공");
+			}
+		}).clone();
+	});
+
 
 	socket.on("sensorInfo",function(d){//센서정보 전달을 위한 ROOM에 접속
 		socket.emit('sensorInfo',JSON.stringify(sf.sensor));//센서정보 전송
