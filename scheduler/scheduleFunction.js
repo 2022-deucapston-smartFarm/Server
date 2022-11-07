@@ -44,7 +44,6 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 			}
 			data.forEach(element => {
 				count++;
-				date = element.date;
 				name = element.name;
 				temperature += element.temperature;
 				humidity += element.humidity;
@@ -52,17 +51,17 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 				ph += element.ph;
 				illuminance += element.illuminance;
 			});
-            sf.setDailyStats(name,StringToDate(date),[(temperature / count).toFixed(2)],[(humidity / count).toFixed(2)],[(co2 / count).toFixed(2)],[(ph / count).toFixed(2)],[(illuminance / count).toFixed(2)]);
+            sf.setDailyStats(name,StringToDate(startTime),[(temperature / count).toFixed(2)],[(humidity / count).toFixed(2)],[(co2 / count).toFixed(2)],[(ph / count).toFixed(2)],[(illuminance / count).toFixed(2)]);
 			//console.log(dailyStats);
 		}
 	}).clone();
-	await schema.DailySchema.findOne({'date' : StringToDate(date)},function(error,data){
+	await schema.DailySchema.findOne({'date' : StringToDate(startTime)},function(error,data){
 		if(error){
 			console.log("db 일간 불러오기 실패");
 		}else{
 			if(data == null){
 				//startTime.setHours(startTime.getHours()-9);
-				let time = startTime.getHours()
+				let time = startTime.getHours();
 				if(time != 0){//일간데이터에 기존값이 없으면 더미데이터 채워주기
 					for (let i=0;i<time;i++){
 						sf.dailyStats.temperature.unshift(26);
