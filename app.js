@@ -47,7 +47,7 @@ io.on('connection' , function(socket) {
 		}).clone();
 	});
 	//식물 기준값 개별 설정
-	socket.on("sensorNewInfo",function(d){//이름 기준값 업데이트
+	socket.on("standardName",function(d){//이름 기준값 업데이트
 		let name = sf.sensorOption.name;
 		sf.sensorOption.name = d;
 		schema.SensorOptionSchema.updateOne({'name' : name},{
