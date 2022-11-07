@@ -8,17 +8,18 @@ const db = require('./database');
 const schedule = require('./scheduler/schedule');
 const sf = require('./schema/data');
 const fcm = require('./schema/message');
+const express_config= require('./express.js');
 require('date-utils');
 
-
-var port = 3000;
+express_config.init(app);
+var port = 49670;
 http.listen(port, ()=>{
 	console.log("listening on :" + port);
 });
-app.get('/',function(req,res){
-	res.send("<h1>Express server Start</h1>");
-});
 
+app.get('/',function(req,res){
+	res.render('index',{});
+});
 
 io.on('connection' , function(socket) { 
 	console.log(socket.id, 'Connected');
@@ -74,6 +75,10 @@ io.on('connection' , function(socket) {
 	socket.on("cameraConnection",function(d){//카메라 접속요청
 		//아두이노 카메라 정보 받아와서 출력 url전달??
 		
+	});
+
+	socket.on('jpgstream_serverio', function(msg){
+		io.emit('jpgstream_clientio',msg.pic)
 	});
 
 	//통계
