@@ -26,9 +26,10 @@ class Database{
                             }
                         });
                         return;
+                    }else{
+                        console.log("db sensor new info find ok");
+                        sf.setSensorOption(data.name,data.temperature,data.co2,data.ph,data.illuminance);
                     }
-                    console.log("db sensor new info find ok");
-                    sf.setSensorOption(data.name,data.temperature,data.co2,data.ph,data.illuminance);
                 }
             });
         })

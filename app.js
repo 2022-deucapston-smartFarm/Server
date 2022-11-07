@@ -12,7 +12,7 @@ const express_config= require('./express.js');
 require('date-utils');
 
 express_config.init(app);
-var port = 49670;
+var port = 3000;
 http.listen(port, ()=>{
 	console.log("listening on :" + port);
 });
