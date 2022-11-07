@@ -17,11 +17,10 @@ module.exports.message = async function(title,body){
 		if(error){
 			console.log("db fcm 처리 실패");
 		}else{
-			if(data == null || data == []){
+			if(data == null || data.length === 0){
 				console.log("empty");
 				return;
 			}
-            console.log("db fcm");
 			data.forEach(element => {
 				message.token = element.token;
                 admin
