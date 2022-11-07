@@ -37,7 +37,7 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 		if(error){
 			console.log("db 일간 처리 실패");
 		}else{
-			if(data == null){
+			if(data == null || data.length === 0){
 				console.log("empty");
 				return;
 			}
@@ -110,7 +110,7 @@ module.exports.weekSensor = async function(){//스케줄 작업,주간 db처리(
 		if(error){
 			console.log("db daily 조회 오류");
 		}else{
-			if(data == null){
+			if(data == null || data.length === 0){
 				console.log("db week데이터 생성내역 없음");
 			}else{
 				data.forEach(element => {
