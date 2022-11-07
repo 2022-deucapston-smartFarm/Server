@@ -47,6 +47,19 @@ io.on('connection' , function(socket) {
 		}).clone();
 	});
 	//식물 기준값 개별 설정
+	socket.on("sensorNewInfo",function(d){//이름 기준값 업데이트
+		let name = sf.sensorOption.name;
+		sf.sensorOption.name = d;
+		schema.SensorOptionSchema.updateOne({'name' : name},{
+			$push : { 'name' : sf.sensorOption.name
+		}},function(error){
+			if(error){
+				console.log("db sd 갱신 처리 오류");
+			}else{
+				console.log("db sd 처리 성공");
+			}
+		}).clone();
+	});
 	socket.on("standardTemperature",function(d){//온도 기준값 업데이트
 		sf.sensorOption.temperature = d;
 		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
