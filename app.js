@@ -12,7 +12,7 @@ const express_config= require('./express.js');
 require('date-utils');
 
 express_config.init(app);
-var port = 3000;
+var port = 49670;
 http.listen(port, ()=>{
 	console.log("listening on :" + port);
 });
@@ -71,16 +71,7 @@ io.on('connection' , function(socket) {
 		socket.emit('controlInfo',JSON.stringify(sf.sensorWork));//센서정보 전송
 	});
 
-	//카메라
-	socket.on("cameraConnection",function(d){//카메라 접속요청
-		//아두이노 카메라 정보 받아와서 출력 url전달??
-		
-	});
-
-	socket.on('jpgstream_serverio', function(msg){
-		io.emit('jpgstream_clientio',msg.pic)
-	});
-
+	
 	//통계
 	socket.on("chartInfo",async function(d){//통계정보 전달,db에서 출력
 		const data = JSON.parse(d); 
@@ -90,7 +81,7 @@ io.on('connection' , function(socket) {
 					console.log("db daily 조회 오류");
 				}else{
 					if(data == null){
-						socket.emit("chartEmpty",false);
+						socket.emit("DailyInfo",false);
 					}else{
 						sf.setDailyStats(data.name,data.date,data.temperature,data.humidity,data.co2,data.ph,data.illuminance);
 						socket.emit("DailyInfo",JSON.stringify(sf.dailyStats));
@@ -103,7 +94,7 @@ io.on('connection' , function(socket) {
 					console.log("db week 조회 오류");
 				}else{
 					if(data == null){
-						socket.emit("chartEmpty",false);
+						socket.emit("WeekInfo",false);
 					}else{
 						sf.setWeekStats(data.name,data.startDate,data.endDate,data.temperature,data.humidity,data.co2,data.ph,data.illuminance)
 						socket.emit("WeekInfo",JSON.stringify(sf.weekStats));
@@ -124,7 +115,7 @@ io.on('connection' , function(socket) {
 		socket.emit("dumyWeek",JSON.stringify(sf.dumyWeekStats()));
 	});
 
-	//공지
+	//공지 토큰 저장
 	socket.on("fcm",async function(d){//fcm 토큰정보 저장
 		await schema.FcmSchema.findOne({'token' : d},function(error,data){
 			if(error){
@@ -159,32 +150,45 @@ io.on('connection' , function(socket) {
 		if(io.sockets.adapter.rooms.get('sensor')?.size >1){//어플로 데이터 전송
 			io.to('sensor').emit('sensorInfo',JSON.stringify(sf.sensor));
 		}
-		//센서 정보 받아오면 식물정보 토대로 벗어날 경우 값조정,센서들 동작
-		if(!sf.sensorWork.fan){
-			if(sf.sensor.co2 >= sf.sensorOption.co2 + 500 || sf.sensor.temperature >= sf.sensorOption.temperature + 4){
-				socket.emit('fan',true);
-			}else if(sf.sensor.temperature <= sf.sensorOption.temperature - 5){
-				socket.emit('fan',true);
-				socket.emit('heat',true);
-			}
-		}else{//수정 필요
-			if(sf.sensor.co2 <= sf.sensorOption.co2 -100 && sf.sensor.temperature < sf.sensorOption.temperature + 4)
-				socket.emit('fan',false);
+
+		//센서 정보 받아오면 식물정보 토대로 벗어날 경우 값조정,센서들 동작,메시지 전송
+		if(data.waterlevel == false){//수위 경고 메시지(동작확인후 조건문 수정)
+			fcm.message("수위 부족","물을 보충해주세요.");
 		}
 
+		if(sf.sensor.ph < sf.sensorOption.ph - 1.0){//ph 경고 메시지
+			fcm.message("ph농도 부족", "배양액을 채워주세요.");
+		}else if(sf.sensor.ph > sf.sensorOption.ph + 1.0){
+			fcm.message("ph농도 과다", "배양액이 너무 많아요. 희석시켜주세요.");
+		}
 
-
-		if(sf.sensor.ph > sf.sensorOption.ph + 1.0){
-			//어플에 경고 메시지 출력
+		if(sf.sensor.co2 >= sf.sensorOption.co2 + 500 || sf.sensor.temperature > sf.sensorOption.temperature + 4){//특정온도,co2 이상시 팬동작
+			if(!sf.sensorWork.fan){
+				socket.emit('fan',true);
+			}
+		}else if(sf.sensor.temperature <= sf.sensorOption.temperature - 4){//특정온도 이하시 히터팬 동작
+			if(!sf.sensorWork.fan){
+				socket.emit('fan',true);
+			}
+			socket.emit('heat',true);
+		}else if(sf.sensor.temperature <= sf.sensorOption.temperature+3){
+			if(sf.sensorWork.fan){
+				socket.emit('fan',false);
+			}
+		}else if(sf.sensor.co2 < sf.sensorOption.co2){//co2가 정상값으로 돌아오면 팬종료,히터켜져있으면 동작무시
+			if(sf.sensorWork.heat){
+				socket.emit('fan',false);
+			}
+		}else if(sf.sensor.temperature <= sf.sensorOption.temperature+1){//정상온도로 돌아오면 종료
+			socket.emit('fan',false);
+			socket.emit('heat',false);
 		}
 	});
     
-	socket.on("arduinoCameraInfo",function(d){//카메라 정보 받아와서 url출력??
-		const data = JSON.parse(d);
+	//카메라
+	socket.on('jpgstream_serverio', function(msg){
+		io.emit('jpgstream_clientio',msg.pic)
 	});
-
-
-
 
 
     socket.on("disconnect", () => {
