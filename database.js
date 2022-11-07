@@ -15,7 +15,7 @@ class Database{
                 if(error){
                     console.log("db sensor new info find error");
                 }else{
-                    if(data == null || data == []){//비어있는경우 기본값 저장
+                    if(data == null || data.length === 0){//비어있는경우 기본값 저장
                         sf.sensorOption.name = "상추";
                         let newSensorOption = new schema.SensorOptionSchema(sf.sensorOption);
                         newSensorOption.save(function(error,data){//db저장
@@ -25,7 +25,6 @@ class Database{
                                 console.log("db sensor new info save ok");
                             }
                         });
-                        return;
                     }else{
                         console.log("db sensor new info find ok");
                         sf.setSensorOption(data.name,data.temperature,data.co2,data.ph,data.illuminance);
