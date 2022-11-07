@@ -60,12 +60,12 @@ io.on('connection' , function(socket) {
 		sf.sensorWork.heat = data;
 		socket.emit('controlInfo',JSON.stringify(sf.sensorWork));//센서정보 전송
 	});
-	socket.on("controlLED",function(data){//LED제어
+	socket.on("controlLed",function(data){//LED제어
 		io.to('control').emit('led',data);
 		sf.sensorWork.led = data;
 		socket.emit('controlInfo',JSON.stringify(sf.sensorWork));//센서정보 전송
 	});
-	socket.on("controlWater",function(data){//워터펌프제어
+	socket.on("controlWaterPump",function(data){//워터펌프제어
 		io.to('control').emit('water',data);
 		sf.sensorWork.waterpump = data;
 		socket.emit('controlInfo',JSON.stringify(sf.sensorWork));//센서정보 전송
