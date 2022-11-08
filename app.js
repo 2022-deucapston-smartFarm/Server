@@ -28,85 +28,49 @@ io.on('connection' , function(socket) {
 		console.log(`Socket connected : ${socket.id}`);
 	});
 
-	socket.on("sensorNewInfo",function(d){//새로운 식물정보 등록,DB저장
+	socket.on("sensorNewInfo",async function(d){//새로운 식물정보 등록,DB저장
 		const data = JSON.parse(d);
 		let name = sf.sensorOption.name;
 		sf.setSensorOption(data.name,data.temperature,data.co2,data.ph,data.illuminance);
-		schema.SensorOptionSchema.updateOne({'name' : name},{
-			$push : { 'name' : sf.sensorOption.name,
+		await schema.SensorOptionSchema.updateOne({'name' : name},{
+			'name' : sf.sensorOption.name,
 			'temperature' : sf.sensorOption.temperature,
 			'co2' : sf.sensorOption.co2,
 			'ph' : sf.sensorOption.ph,
 			'illuminance' : sf.sensorOption.illuminance
-		}},function(error){
-			if(error){
-				console.log("db sd 갱신 처리 오류");
-			}else{
-				console.log("db sd 처리 성공");
-			}
-		}).clone();
+		});
 	});
 	//식물 기준값 개별 설정
-	socket.on("standardName",function(d){//이름 기준값 업데이트
+	socket.on("standardName",async function(d){//이름 기준값 업데이트
 		let name = sf.sensorOption.name;
 		sf.sensorOption.name = d;
 		schema.SensorOptionSchema.updateOne({'name' : name},{
-			$push : { 'name' : sf.sensorOption.name
-		}},function(error){
-			if(error){
-				console.log("db sd 갱신 처리 오류");
-			}else{
-				console.log("db sd 처리 성공");
-			}
-		}).clone();
+			'name' : sf.sensorOption.name
+		});
 	});
-	socket.on("standardTemperature",function(d){//온도 기준값 업데이트
+	socket.on("standardTemperature",async function(d){//온도 기준값 업데이트
 		sf.sensorOption.temperature = d;
 		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
-			$push : { 'temperature' : sf.sensorOption.temperature
-		}},function(error){
-			if(error){
-				console.log("db sd 갱신 처리 오류");
-			}else{
-				console.log("db sd 처리 성공");
-			}
-		}).clone();
+			'temperature' : sf.sensorOption.temperature
+		});
 	});
-	socket.on("standardCo2",function(d){//co2 기준값 업데이트
+	socket.on("standardCo2",async function(d){//co2 기준값 업데이트
 		sf.sensorOption.co2 = d;
-		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
-			$push : { 'co2' : sf.sensorOption.co2
-		}},function(error){
-			if(error){
-				console.log("db sd 갱신 처리 오류");
-			}else{
-				console.log("db sd 처리 성공");
-			}
-		}).clone();
+		await schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
+			'co2' : sf.sensorOption.co2
+		});
 	});
-	socket.on("standardPh",function(d){//ph 기준값 업데이트
+	socket.on("standardPh",async function(d){//ph 기준값 업데이트
 		sf.sensorOption.ph = d;
 		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
-			$push : { 'ph' : sf.sensorOption.ph
-		}},function(error){
-			if(error){
-				console.log("db sd 갱신 처리 오류");
-			}else{
-				console.log("db sd 처리 성공");
-			}
-		}).clone();
+			'ph' : sf.sensorOption.ph
+		});
 	});
-	socket.on("standardIlluminance",function(d){//조도 기준값 업데이트
+	socket.on("standardIlluminance",async function(d){//조도 기준값 업데이트
 		sf.sensorOption.illuminance = d;
 		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
-			$push : { 'illuminance' : sf.sensorOption.illuminance
-		}},function(error){
-			if(error){
-				console.log("db sd 갱신 처리 오류");
-			}else{
-				console.log("db sd 처리 성공");
-			}
-		}).clone();
+			'illuminance' : sf.sensorOption.illuminance
+		});
 	});
 
 
