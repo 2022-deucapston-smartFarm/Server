@@ -39,6 +39,7 @@ io.on('connection' , function(socket) {
 			'ph' : sf.sensorOption.ph,
 			'illuminance' : sf.sensorOption.illuminance
 		});
+		socket.emit('standardOption',JSON.stringify(sf.sensorOption));
 	});
 	//식물 기준값 개별 설정
 	socket.on("standardName",async function(d){//이름 기준값 업데이트
@@ -47,31 +48,40 @@ io.on('connection' , function(socket) {
 		schema.SensorOptionSchema.updateOne({'name' : name},{
 			'name' : sf.sensorOption.name
 		});
+		socket.emit('standardOption',JSON.stringify(sf.sensorOption));
 	});
 	socket.on("standardTemperature",async function(d){//온도 기준값 업데이트
 		sf.sensorOption.temperature = d;
 		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
 			'temperature' : sf.sensorOption.temperature
 		});
+		socket.emit('standardOption',JSON.stringify(sf.sensorOption));
 	});
 	socket.on("standardCo2",async function(d){//co2 기준값 업데이트
 		sf.sensorOption.co2 = d;
 		await schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
 			'co2' : sf.sensorOption.co2
 		});
+		socket.emit('standardOption',JSON.stringify(sf.sensorOption));
 	});
 	socket.on("standardPh",async function(d){//ph 기준값 업데이트
 		sf.sensorOption.ph = d;
 		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
 			'ph' : sf.sensorOption.ph
 		});
+		socket.emit('standardOption',JSON.stringify(sf.sensorOption));
 	});
 	socket.on("standardIlluminance",async function(d){//조도 기준값 업데이트
 		sf.sensorOption.illuminance = d;
 		schema.SensorOptionSchema.updateOne({'name' : sf.sensorOption.name},{
 			'illuminance' : sf.sensorOption.illuminance
 		});
+		socket.emit('standardOption',JSON.stringify(sf.sensorOption));
 	});
+	socket.on("standardOption",function(d){//센서 기준값 전달
+		socket.emit('standardOption',JSON.stringify(sf.sensorOption));//센서기준값 전송
+	});
+	
 
 
 	socket.on("sensorInfo",function(d){//센서정보 전달을 위한 ROOM에 접속
