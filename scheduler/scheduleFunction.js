@@ -24,7 +24,7 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 	let endTime = new Date();
 	let startTime = new Date();
 	endTime.setHours(endTime.getHours()+9);
-	startTime.setHours(endTime.getHours()-1);
+	startTime.setHours(startTime.getHours()+8);
 	let temperature =0;
 	let humidity =0;
 	let co2 =0;
@@ -32,7 +32,7 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 	let illuminance =0;
 	let count =0;
 	let name ="";
-    sf.cleanDailyStats;
+    sf.cleanDailyStats();
 	await schema.SensorSchema.find({'date' : {'$gte' : startTime , '$lt' : endTime}},function(error,data){
 		if(error){
 			console.log("db 일간 처리 실패");
@@ -72,7 +72,7 @@ module.exports.dailySensor = async function(){//스케줄 작업,일간 db처리
 				}
 				let newDaily = new schema.DailySchema(sf.dailyStats);
 				newDaily.save();
-				console.log("db daily 1시간 처리 생성");
+				console.log("db daily 생성");
 			}else{
 				schema.DailySchema.updateOne({'date' : StringToDate(startTime)},{
 					$push : { 'temperature' : sf.dailyStats.temperature,
@@ -105,7 +105,7 @@ module.exports.weekSensor = async function(){//스케줄 작업,주간 db처리(
 	let ph =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	let illuminance =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	let count =0;
-    sf.cleanWeekStats;
+    sf.cleanWeekStats();
 	await schema.DailySchema.find({'date' : {'$gte' : StringToDate(startTime) , '$lte' : StringToDate(endTime)},function(error,data) {
 		if(error){
 			console.log("db daily 조회 오류");
