@@ -78,15 +78,18 @@ mSocket.emit("controlWater",true/false)//워터펌프 입력값에 따라 동작
 해당 명령어 실행시 동작처리후 제어센서 정보를 다시 보내준다.
 
 ---
-### 통계 정보 조회  
+## 통계 정보 조회  
 mSocket.emit("chartInfo",data)  
 data는 json파일 형식으로 startDate , endDate를 보내주면 서버에서 해당 날짜의 통계를 보내준다  
 chartInfo로 계산된 데이터는 전송되어 더미데이터 weekstats와 같은 상태로 데이터를 받을수있다.  
 
 
-### 더미 메시지 
-mSocket.emit("dumyMessage",true)
-해당시 fcm으로 test알림을 전송받을수 있다.
+## 더미 메시지  
+
+mSocket.emit("dumyMessage",true)  
+해당시 fcm으로 test알림을 전송받을수 있다.  
+
+  
 ---
 
 ## 더미데이터 받아오기
