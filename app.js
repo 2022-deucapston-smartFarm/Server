@@ -2,7 +2,6 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const rtsp = require('rtsp-ffmpeg');
-
 const schema = require('./schema/schema');
 const db = require('./database');
 const schedule = require('./scheduler/schedule');
@@ -82,8 +81,6 @@ io.on('connection' , function(socket) {
 		socket.emit('standardOption',JSON.stringify(sf.sensorOption));//센서기준값 전송
 	});
 	
-
-
 	socket.on("sensorInfo",function(d){//센서정보 전달을 위한 ROOM에 접속
 		socket.emit('sensorInfo',JSON.stringify(sf.sensor));//센서정보 전송
 		socket.join('sensor');//센서방 접속
@@ -118,33 +115,43 @@ io.on('connection' , function(socket) {
 	//통계
 	socket.on("chartInfo",async function(d){//통계정보 전달,db에서 출력
 		const data = JSON.parse(d); 
-		if(data.mode == 1){//일일 통계 1
-			await schema.DailySchema.findOne({'date' : d.date},function(error,data){//d.date = '2022-10-22'
-				if(error){
-					console.log("db daily 조회 오류");
+		let count =0;
+		let temperature =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		let humidity =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		let co2 =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		let ph =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		let illuminance =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		sf.cleanWeekStats();
+		await schema.DailySchema.find({'date' : {'$gte' : data.startDate , '$lte' : data.endDate}},function(error,data) {
+			if(error){
+				console.log("db daily 조회 오류");
+			}else{
+				if(data == null || data.length === 0){
+					console.log("db 데이터 내역 없음");
 				}else{
-					if(data == null){
-						socket.emit("DailyInfo",false);
-					}else{
-						sf.setDailyStats(data.name,data.date,data.temperature,data.humidity,data.co2,data.ph,data.illuminance);
-						socket.emit("DailyInfo",JSON.stringify(sf.dailyStats));
+					data.forEach(element => {
+						count++;
+						sf.weekStats.name = element.name;
+						for(let i=0;i<element.co2.length;i++){
+							temperature[i] += element.temperature[i];
+							humidity[i] += element.humidity[i];
+							co2[i] += element.co2[i];
+							ph[i] += element.ph[i];
+							illuminance[i] += element.illuminance[i];
+						}
+					});
+					for(let i=0;i<24;i++){
+						temperature[i] /= count;
+						humidity[i] /= count;
+						co2[i] /= count;
+						ph[i] /= count;
+						illuminance[i] /= count;
 					}
+					sf.setWeekStats(data.startDate,data.endDate,temperature,humidity,co2,ph,illuminance);
 				}
-			}).clone();
-		}else{//주간 통계 2 
-			await schema.WeekSchema.findOne({'startDate' : d.startDate},function(error,data){
-				if(error){
-					console.log("db week 조회 오류");
-				}else{
-					if(data == null){
-						socket.emit("WeekInfo",false);
-					}else{
-						sf.setWeekStats(data.name,data.startDate,data.endDate,data.temperature,data.humidity,data.co2,data.ph,data.illuminance)
-						socket.emit("WeekInfo",JSON.stringify(sf.weekStats));
-					}
-				}
-			}).clone();
-		}
+			}
+		}).clone();
+		socket.emit("chartInfo",JSON.stringify(sf.weekStats));
 	});
 
 	//더미파일 받기
