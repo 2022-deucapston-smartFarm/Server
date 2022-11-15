@@ -91,14 +91,10 @@ mSocket.emit("controlWater",true/false)//워터펌프 입력값에 따라 동작
 해당 명령어 실행시 동작처리후 제어센서 정보를 다시 보내준다.
 
 ---
-통계 정보 조회
+**통계 정보 조회
 mSocket.emit("chartInfo",data)
-data는 json파일 형식으로 mode와 date를 가진다.
-mode가 1번이면 일일 통계조회이고 2번이면 주간 통계이다.
-date에 날짜를 기준으로 일일통계를 조회하거나 주간통계의 시작날짜로 조회한다.
-일일통계는 DailyInfo, 주간통계는 WeekInfo로 전달되므로해당 리스너를 제작한다.
-또한 해당 날짜에 정보가 db에 없는경우 chartEmpty로 전달되므로 해당 오류 리스너를 제작한다.
-
+data는 json파일 형식으로 startDate , endDate를 보내주면 서버에서 해당 날짜의 통계를 보내준다
+chartInfo로 계산된 데이터는 전송되어 더미데이터 weekstats와 같은 상태로 데이터를 받을수있다.
 ---
 공지 부분 미정
 
