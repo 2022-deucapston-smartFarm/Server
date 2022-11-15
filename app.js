@@ -164,6 +164,9 @@ io.on('connection' , function(socket) {
 	socket.on("dumyWeek",function(d){//센서 데이터
 		socket.emit("dumyWeek",JSON.stringify(sf.dumyWeekStats()));
 	});
+	socket.on("dumyMessage",function(d){
+		fcm.message("Test", "Test용 메시지 전송");
+	});
 
 	//공지 토큰 저장
 	socket.on("fcm",async function(d){//fcm 토큰정보 저장
