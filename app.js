@@ -147,7 +147,7 @@ io.on('connection' , function(socket) {
 						ph[i] /= count;
 						illuminance[i] /= count;
 					}
-					sf.setWeekStats(data.startDate,data.endDate,temperature,humidity,co2,ph,illuminance);
+					sf.setWeekStats(data.startDate,data.endDate,temperature.toFixed(2),humidity.toFixed(2),co2.toFixed(2),ph.toFixed(2),illuminance.toFixed(2));
 				}
 			}
 		}).clone();
