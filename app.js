@@ -141,13 +141,13 @@ io.on('connection' , function(socket) {
 						}
 					});
 					for(let i=0;i<24;i++){
-						temperature[i] /= count;
-						humidity[i] /= count;
-						co2[i] /= count;
-						ph[i] /= count;
-						illuminance[i] /= count;
+						temperature[i] =  (temperature[i] /count).toFixed(2);
+						humidity[i] = (humidity[i]/count).toFixed(2);
+						co2[i] = (co2[i]/count).toFixed(2);
+						ph[i] = (ph[i]/count).toFixed(2);
+						illuminance[i] = (illuminance[i]/count).toFixed(2);
 					}
-					sf.setWeekStats(data.startDate,data.endDate,temperature.toFixed(2),humidity.toFixed(2),co2.toFixed(2),ph.toFixed(2),illuminance.toFixed(2));
+					sf.setWeekStats(data.startDate,data.endDate,temperature,humidity,co2,ph,illuminance);
 				}
 			}
 		}).clone();
