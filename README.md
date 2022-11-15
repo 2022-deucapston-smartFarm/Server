@@ -38,26 +38,13 @@ var dailySchema = mongoose.Schema({
 일일통계 저장역할로 1시간마다 실행되며 기존 센서스키마에서 한시간 분량을 가져와 평균값을 계산하여 배열로 저장
 예를들면 일일통계 스키마에는 date로 '2022-10-19'일이 저장되면 5가지 센서값에는 24개의 크기를 배열이 저장되어 0~23시까지의 정보가 저장된다.
 이를 어플에서 하루 통계치로 시간대별 평균값을 알수있다.
-```
-var weekSchema = mongoose.Schema({
-        name : String,
-        startDate : String,
-        endDate : String,
-        temperature : [Number],
-        humidity : [Number],
-        co2 : [Number],
-        ph : [Number],
-        illuminance :[Number]
-});
-```
-주간통계 스키마로 매주 월요일 새벽1시에 저장작업에 들어가고 월요일부터 일요일까지의 일일통계값을 평균내어서 저장한다.
-일일통계처럼 24개 크기의 배열로 저장되어 0~23시까지의 평균값이 저장되고 startDate,endDate는 '2022-10-19'의 형태로 저장된다.
+
 
 ---
-## 센서 정보 호출 (어플에서 호출)
-기본센서정보 저장
-mSocket.emit("sensorNewInfo",data)
-data는 json파일 형식으로 name,temperature,co2,ph,illuminance의 값을 보내주면된다.
+## 센서 정보 호출 (어플에서 호출)  
+기본센서정보 저장  
+mSocket.emit("sensorNewInfo",data)  
+data는 json파일 형식으로 name,temperature,co2,ph,illuminance의 값을 보내주면된다.  
 
 ---
 센서 정보 받기
@@ -91,16 +78,18 @@ mSocket.emit("controlWater",true/false)//워터펌프 입력값에 따라 동작
 해당 명령어 실행시 동작처리후 제어센서 정보를 다시 보내준다.
 
 ---
-**통계 정보 조회
-mSocket.emit("chartInfo",data)
-data는 json파일 형식으로 startDate , endDate를 보내주면 서버에서 해당 날짜의 통계를 보내준다
-chartInfo로 계산된 데이터는 전송되어 더미데이터 weekstats와 같은 상태로 데이터를 받을수있다.
----
-공지 부분 미정
+### 통계 정보 조회  
+mSocket.emit("chartInfo",data)  
+data는 json파일 형식으로 startDate , endDate를 보내주면 서버에서 해당 날짜의 통계를 보내준다  
+chartInfo로 계산된 데이터는 전송되어 더미데이터 weekstats와 같은 상태로 데이터를 받을수있다.  
 
+
+### 더미 메시지 
+mSocket.emit("dumyMessage",true)
+해당시 fcm으로 test알림을 전송받을수 있다.
 ---
 
-##더미데이터 받아오기
+## 더미데이터 받아오기
 ```
 socket.emit("dumySensor",true);
 --->
