@@ -4,7 +4,7 @@ const ejs = require('ejs');
 module.exports.init = function(app)
 {
   
-  app.use(express.static('public'));
+  app.use(express.static('views'));
   app.set('view engine', 'ejs');
 
   let ejsOptions = {outputFunctionName: 'echo'};
