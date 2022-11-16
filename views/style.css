@@ -41,7 +41,7 @@
 
 .page_login,
 .page_display {
-  background-color:#0069d8;
+  background-color:#FFFFFF;
   color: #FFFFFF;
 }
 
@@ -102,7 +102,7 @@
   width:40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #0074e0;
+  background-color: #FFFFFF;
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M 8.9887248,7.8764193 21.011275,19.876419 m -12.0225502,0 L 21.011275,7.8764193'/%3E%3C/svg%3E");
   background-position-y: 1px;
 }
@@ -135,7 +135,7 @@
 {
   padding: 5px;
   border-radius: 2px;
-  background-color: #0074e0;
+  background-color: #FFFFFF;
   color:#FFFFFF;
   border: none;
 }
